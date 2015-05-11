@@ -1,2 +1,5 @@
 div
-    p This is the header
+    if session.guest
+        p Hi, #{session.guest.user}!
+    else
+        a(href="/login") Sign in

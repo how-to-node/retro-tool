@@ -1,7 +1,7 @@
 // Mapping paths with routers
 var routes = {
     '/': require('./main'),
-    '/users': require('./users'),
+    '/login': require('./session'),
     '/retros': require('./retros')
 };
 

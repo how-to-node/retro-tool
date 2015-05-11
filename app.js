@@ -1,16 +1,26 @@
-var express = require('express');
-var path = require('path');
-var favicon = require('serve-favicon');
-var logger = require('morgan');
-var cookieParser = require('cookie-parser');
-var bodyParser = require('body-parser');
-var routerSetup = require('./routes/setup.js');
+var express = require('express'),
+    app = express(),
+    server = require('http').Server(app),
+    io = require('socket.io')(server),
 
-var app = express();
+    // Core modules
+    path = require('path'),
+    util = require('util'),
+
+    // Middlewares
+    favicon = require('serve-favicon'),
+    logger = require('morgan'),
+    cookieParser = require('cookie-parser'),
+    bodyParser = require('body-parser'),
+    session = require('express-session'),
+
+    // Own modules
+    routerSetup = require('./routes/setup.js'),
+    socketsSetup = require('./sockets/setup.js');
 
 var port = process.env.PORT || '3000';
 
-// view engine setup
+// Setting up Jade
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
 
@@ -18,13 +28,27 @@ app.set('view engine', 'jade');
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
-app.use(cookieParser());
+app.use(cookieParser('retro-tool'));
 app.use(express.static(path.join(__dirname, 'public')));
+
+// Session configuration
+app.use(session({
+    secret: 'retro-tool',
+    maxAge: 36000000,
+    resave: true,
+    saveUninitialized: false
+}));
+app.use(function(req, res, next) {
+    res.locals.session = req.session;
+    next();
+});
 
 // Configuring routes
 routerSetup(app);
+// Configuring WebSockets
+socketsSetup(io);
 
-// catch 404 and forward to error handler
+// Catch 404
 app.use(function(req, res, next) {
   var err = new Error('Not Found');
   err.status = 404;
@@ -52,5 +76,13 @@ if (app.get('env') === 'development') {
     });
 }
 
-app.listen(port);
-console.log('Listening on port: ' + port);
+server.listen(port);
+
+server.on('error', function(err) {
+    console.error('There was an error');
+    console.log(util.inspect(err));
+});
+
+server.on('listening', function() {
+    console.log('Listening on port: ' + port);
+});

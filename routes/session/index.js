@@ -1,5 +1,8 @@
-var express = require('express');
+var express = require('express'),
+    sessionsManager = require('../../model/session/manager');
+
 var router = express.Router();
+
 
 // START: Routes
 
@@ -14,8 +17,19 @@ router.post('/', function(req, res, next) {
         user: req.body.username,
         password: req.body.password
     };
-    req.session.guest = guest;
-    res.redirect('/');
+    var userKey = sessionsManager.login(req.body.username, req.body.password);
+
+    if (userKey) {
+        req.session.userKey = userKey;
+        res.redirect('/');
+    } else {
+        res.render('login', {
+            error: {
+                message: 'Try again'
+            }
+        });
+    }
+
 });
 // END: Routes
 

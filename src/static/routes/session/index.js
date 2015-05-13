@@ -13,12 +13,7 @@ router.get('/', function(req, res) {
 
 // Sign in action
 router.post('/', function(req, res, next) {
-    var guest = {
-        user: req.body.username,
-        password: req.body.password
-    };
     var userKey = sessionsManager.login(req.body.username, req.body.password);
-
     if (userKey) {
         req.session.userKey = userKey;
         res.redirect('/');

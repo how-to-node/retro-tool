@@ -1,18 +1,19 @@
 var express = require('express'),
+    authorization = require('../../model/session/authorization'),
     router = express.Router();
 
 // retros entry point - GET
-router.get('/', function(req, res, next) {
+router.get('/', authorization.restrictToLoggedIn, function(req, res, next) {
     res.redirect('/user/dashboard');
 });
 
 // create a new retro - GET
-router.get('/dashboard', function(req, res, next) {
+router.get('/dashboard', authorization.restrictToLoggedIn, function(req, res, next) {
     res.render('dashboard-user', {});
 });
 
 // create a new retro - GET
-router.get('/my-profile', function(req, res, next) {
+router.get('/my-profile', authorization.restrictToLoggedIn, function(req, res, next) {
     res.render('my-profile-user', {});
 });
 

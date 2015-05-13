@@ -5,8 +5,6 @@ var path = require('path'),
 var modules = getAvailableModules();
 
 module.exports = function(app) {
-    console.log(modules.views);
-
     // mapping each module views
     app.set('views', modules.views);
 
@@ -29,11 +27,11 @@ module.exports = function(app) {
 // Looks for modules synchronously in the file system. Modules structure:
 //  pages/
 //    +-- moduleA/
-//          + -- views/
-//          + -- routes.js
+//      + -- views/
+//      + -- routes.js
 //    +-- moduleB/
-//          + -- views/
-//          + -- routes.js
+//      + -- views/
+//      + -- routes.js
 function getAvailableModules() {
     var files = fs.readdirSync(__dirname),
         modules = {

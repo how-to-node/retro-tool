@@ -23,7 +23,6 @@ router.get('/:room', function(req, res, next) {
         room: room
     });
 });
-// END: Routes
 
 module.exports = {
     router: router,

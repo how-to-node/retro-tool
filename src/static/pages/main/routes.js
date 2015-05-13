@@ -29,7 +29,11 @@ router.post('/sign-in', function(req, res, next) {
             }
         });
     }
+});
 
+// unauthorized page - GET
+router.get('/unauthorized', function(req, res) {
+    res.render('unauthorized', {});
 });
 
 module.exports = {

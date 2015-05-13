@@ -2,7 +2,7 @@ var express = require('express'),
     path = require('path'),
     authorization = require('../../model/session/authorization'),
     router = express.Router();
-console.log(authorization);
+
 // retros entry point - GET
 router.get('/', authorization.restrictToLoggedIn, function(req, res, next) {
     res.redirect('/retro/create');

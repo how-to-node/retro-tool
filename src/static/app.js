@@ -15,13 +15,11 @@ var express = require('express'),
     session = require('express-session'),
 
     // Own modules
-    routerSetup = require('./routes/setup.js'),
-    socketsSetup = require('./sockets/setup.js');
+    routerSetup = require('./pages/setup.routes.js');
 
 var port = process.env.PORT || '3000';
 
 // Setting up Jade
-app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
 
 //app.use(favicon(__dirname + '/public/favicon.ico'));
@@ -45,8 +43,6 @@ app.use(function(req, res, next) {
 
 // Configuring routes
 routerSetup(app);
-// Configuring WebSockets
-socketsSetup(io);
 
 // Catch 404
 app.use(function(req, res, next) {

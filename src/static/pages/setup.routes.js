@@ -33,7 +33,9 @@ module.exports = function(app, io, session) {
                 }
                 var moduleNamespace = io.of('/' + namespace);
                 moduleNamespace.use(sioSession(session));
-                moduleNamespace.on('connection', connectionHandler);
+                moduleNamespace.on('connection', function(socket) {
+                    connectionHandler(socket, moduleNamespace);
+                });
             });
         }
     });

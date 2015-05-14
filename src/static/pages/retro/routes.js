@@ -1,6 +1,8 @@
 var express = require('express'),
     path = require('path'),
     authorization = require('../../model/session/authorization'),
+    sessionManager = require('../../model/session/manager'),
+    retrosManager = require('../../model/retros/manager'),
     router = express.Router();
 
 // retros entry point - GET
@@ -26,10 +28,24 @@ router.get('/:room', authorization.restrictToLoggedIn, function(req, res, next) 
 });
 
 // handles socket connections to /retro namespace
-function retroWebSocketHandler(client) {
-    console.log('New connection:', client.handshake.session);
-    client.emit('connection:accepted', 'Good to go');
+function retroWebSocketHandler(client, ns) {
+    client.on('join:retro', function(room) {
+        var userKey = client.handshake.session && client.handshake.session.userKey,
+            user = sessionManager.getUser(userKey);
 
+        if (!user || !retrosManager.hasAccess(user.username) || !retrosManager.isActiveRetro(room)) {
+            return;
+        }
+
+        setupSocket(client, room);
+    });
+
+    function setupSocket(clientSocket, room) {
+        clientSocket.join(room);
+
+        clientSocket.emit('connection:accepted', room);
+        ns.breadcast.to(room);
+    }
 }
 
 module.exports = {

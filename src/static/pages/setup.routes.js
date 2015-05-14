@@ -40,13 +40,13 @@ module.exports = function(app, io, session) {
 };
 
 // Looks for modules synchronously in the file system. Modules structure:
-//  pages/
-//    +-- moduleA/
-//      + -- views/
-//      + -- routes.js
-//    +-- moduleB/
-//      + -- views/
-//      + -- routes.js
+//   pages/
+//     +-- moduleA/
+//       + -- views/
+//       + -- routes.js
+//     +-- moduleB/
+//       + -- views/
+//       + -- routes.js
 function getAvailableModules() {
     var files = fs.readdirSync(__dirname),
         modules = {

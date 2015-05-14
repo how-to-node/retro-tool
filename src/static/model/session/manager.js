@@ -1,8 +1,6 @@
-// @todo: replace by module
-var usersManager = require('./users_mock.json');
-
 // Modules
-var randtoken = require('rand-token');
+var randtoken = require('rand-token'),
+    usersManager = require('../users/manager');
 
 var sessions = {};
 
@@ -14,7 +12,7 @@ module.exports = {
      * @return {string | null} - userKey. null if credentials don't match
      */
     login: function login(username, password) {
-        var user = usersManager[username],
+        var user = usersManager.getUserData(username),
             newKey;
 
         if (!user || user.password !== password) {

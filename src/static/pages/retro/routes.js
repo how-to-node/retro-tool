@@ -25,7 +25,18 @@ router.get('/:room', authorization.restrictToLoggedIn, function(req, res, next) 
     });
 });
 
+// handles socket connections to /retro namespace
+function retroWebSocketHandler(client) {
+    console.log('New connection:', client.handshake.session);
+    client.emit('connection:accepted', 'Good to go');
+
+}
+
 module.exports = {
     router: router,
-    path: '/retro'
+    path: '/retro',
+    webSocketsMap: {
+        retro: retroWebSocketHandler
+    }
+
 };

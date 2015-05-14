@@ -1,10 +1,11 @@
 var path = require('path'),
     fs = require('fs'),
+    sioSession = require('express-socket.io-session'),
     sessionsManager = require('../model/session/manager');
 
 var modules = getAvailableModules();
 
-module.exports = function(app) {
+module.exports = function(app, io, session) {
     // mapping each module views
     app.set('views', modules.views);
 
@@ -20,7 +21,21 @@ module.exports = function(app) {
 
     // routes mapping
     modules.routes.forEach(function(route) {
+        // http
         app.use(route.path, route.router);
+
+        // web socket
+        if (route.webSocketsMap) {
+            Object.keys(route.webSocketsMap).forEach(function(namespace) {
+                connectionHandler = route.webSocketsMap[namespace];
+                if (typeof namespace !== 'string' || typeof connectionHandler !== 'function') {
+                    return;
+                }
+                var moduleNamespace = io.of('/' + namespace);
+                moduleNamespace.use(sioSession(session));
+                moduleNamespace.on('connection', connectionHandler);
+            });
+        }
     });
 };
 

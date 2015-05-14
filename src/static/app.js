@@ -13,11 +13,18 @@ var express = require('express'),
     cookieParser = require('cookie-parser'),
     bodyParser = require('body-parser'),
     session = require('express-session'),
+    sioSession = require('express-socket.io-session'),
 
     // Own modules
     routerSetup = require('./pages/setup.routes.js');
 
-var port = process.env.PORT || '3000';
+var port = process.env.PORT || '3000',
+    sessionInstance = session({
+        secret: 'retro-tool',
+        maxAge: 36000000,
+        resave: true,
+        saveUninitialized: false
+    });
 
 // Setting up Jade
 app.set('view engine', 'jade');
@@ -30,19 +37,15 @@ app.use(cookieParser('retro-tool'));
 app.use(express.static(path.join(__dirname, '..', 'public')));
 
 // Session configuration
-app.use(session({
-    secret: 'retro-tool',
-    maxAge: 36000000,
-    resave: true,
-    saveUninitialized: false
-}));
+app.use(sessionInstance);
 app.use(function(req, res, next) {
     res.locals.session = req.session;
     next();
 });
+io.use(sioSession(sessionInstance));
 
 // Configuring routes
-routerSetup(app);
+routerSetup(app, io, sessionInstance);
 
 // Catch 404
 app.use(function(req, res, next) {

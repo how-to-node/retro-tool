@@ -45,5 +45,19 @@ module.exports = {
         var user = sessions[key];
 
         return user || null;
+    },
+
+    /**
+     * Retrieves logged user data.
+     * @param {object} session
+     * @return {object} user
+     */
+    getLoggedUser: function(session) {
+        debugger;
+        if (session && session.userKey) {
+            return this.getUser(session.userKey) || null;
+        } else {
+            return null;
+        }
     }
 };

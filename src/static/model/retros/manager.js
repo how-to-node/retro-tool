@@ -57,7 +57,7 @@ module.exports = {
      * Determines if indicated user is the owner of the indicated retro
      */
     isRetroOwner: function(retroName, username) {
-        var retro = retros[name];
+        var retro = retros[retroName];
         return !!retro && retro.owner === username;
     },
 

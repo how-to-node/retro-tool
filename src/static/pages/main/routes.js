@@ -12,6 +12,15 @@ router.get('/login', function(req, res) {
     res.render('login-main', {});
 });
 
+// logout - GET
+router.get('/log-out', function(req, res) {
+    var userKey = req.session.userKey;
+    if (userKey) {
+        sessionsManager.logout(userKey);
+    }
+    res.redirect('/');
+});
+
 // sign-in handler - POST
 // body:
 //   - body.username: username - required

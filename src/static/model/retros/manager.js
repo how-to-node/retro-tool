@@ -1,17 +1,31 @@
 // todo: When he have persistance, populate this pool
 var retros = {};
 
+// posible status of a retro
+var retroStatus = ['adding-items', 'voting', 'adding-actions-to-take', 'closed'];
+
+/**
+ * @constructor Retro
+ */
 function Retro(name, ownerUsername, participants) {
+
     this.name = name;
     this.owner = ownerUsername;
     this.participants = participants || [];
-    this.isActive = true;
+    this.status = retroStatus[0];
 
     this.items = {
         positives: [],
         negatives: []
     };
 }
+
+/**
+ * Determines if the retro is in one of these: adding-items, voting, adding-actions-to-take
+ */
+Retro.prototype.isActive = function() {
+    return retroStatus.indexOf(this.status) < 3;
+};
 
 module.exports = {
     /**
@@ -33,7 +47,7 @@ module.exports = {
      */
     isActiveRetro: function(name) {
         var retro = retros[name];
-        return !!retro && retro.isActive;
+        return !!retro && retro.isActive();
     },
 
     /**

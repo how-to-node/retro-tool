@@ -33,18 +33,18 @@ function retroWebSocketHandler(client, ns) {
         var userKey = client.handshake.session && client.handshake.session.userKey,
             user = sessionManager.getUser(userKey);
 
-        if (!user || !retrosManager.hasAccess(user.username) || !retrosManager.isActiveRetro(room)) {
+        if (!user || !retrosManager.hasAccess(room, user.username) || !retrosManager.isActiveRetro(room)) {
             return;
         }
 
-        setupSocket(client, room);
+        setupSocket(client, room, user);
     });
 
-    function setupSocket(clientSocket, room) {
+    function setupSocket(clientSocket, room, user) {
         clientSocket.join(room);
 
         clientSocket.emit('connection:accepted', room);
-        ns.breadcast.to(room);
+        clientSocket.broadcast.to(room).emit('user:joined', user.username);
     }
 }
 

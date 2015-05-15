@@ -15,6 +15,23 @@ router.get('/create', authorization.restrictToLoggedIn, function(req, res, next)
     res.render('create-retro', {});
 });
 
+// create a new retro - POST
+router.post('/create', authorization.restrictToLoggedIn, function(req, res, next) {
+    var retroName = req.body.name;
+
+    if (retrosManager.createRetro(retroName)) {
+        // go to room
+        res.redirect('/retro/' + retroName);
+    } else {
+        // couldn't create retro
+        res.render('create-retro', {
+            error: {
+                message: 'Retro name already taken'
+            }
+        });
+    }
+});
+
 // access a retro directly - GET
 // query parameters:
 //   - room: room number
@@ -29,6 +46,8 @@ router.get('/:room', authorization.restrictToLoggedIn, function(req, res, next) 
 
 // handles socket connections to /retro namespace
 function retroWebSocketHandler(client, ns) {
+
+    // when any client tries to connect a room
     client.on('join:retro', function(room) {
         var userKey = client.handshake.session && client.handshake.session.userKey,
             user = sessionManager.getUser(userKey);
@@ -40,6 +59,7 @@ function retroWebSocketHandler(client, ns) {
         setupSocket(client, room, user);
     });
 
+    // relating client with retro room
     function setupSocket(clientSocket, room, user) {
         clientSocket.join(room);
 

@@ -14,6 +14,9 @@ function Retro(name, ownerUsername, participants) {
     this.participants = participants || [];
     this.status = retroStatus[0];
 
+    // the owner is a participant of the retro
+    this.participants.push(ownerUsername);
+
     this.items = {
         positives: [],
         negatives: []

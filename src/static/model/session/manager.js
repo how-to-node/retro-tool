@@ -53,7 +53,6 @@ module.exports = {
      * @return {object} user
      */
     getLoggedUser: function(session) {
-        debugger;
         if (session && session.userKey) {
             return this.getUser(session.userKey) || null;
         } else {

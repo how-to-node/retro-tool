@@ -40,8 +40,6 @@ router.get('/:room', authorization.restrictToLoggedIn, function(req, res, next) 
     var room = req.params.room,
         user = sessionManager.getLoggedUser(req.session);
 
-    console.log(user.username + ' is trying to join ' + room);
-
     if (!retrosManager.isActiveRetro(room) || !retrosManager.hasAccess(room, user.username)) {
         res.render('not-found-retro', {});
         return;
@@ -60,9 +58,14 @@ function retroWebSocketHandler(client, ns) {
     client.on('join:retro', function(room) {
         var user = sessionManager.getLoggedUser(client.handshake.session);
 
+        console.log('Socket - INFO: ' + user.username + ' trying to join ' + room);
+
         if (!user || !retrosManager.hasAccess(room, user.username) || !retrosManager.isActiveRetro(room)) {
+            console.log('Socket - INFO: Couldnt join');
             return;
         }
+
+        console.log('Socket - INFO: Success');
 
         setupSocket(client, room, user);
     });

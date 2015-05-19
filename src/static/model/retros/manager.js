@@ -46,7 +46,7 @@ module.exports = {
     },
 
     /**
-     * Determines if a retro y active
+     * Determines if a retro is active
      */
     isActiveRetro: function(name) {
         var retro = retros[name];

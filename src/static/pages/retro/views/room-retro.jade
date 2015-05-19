@@ -2,5 +2,6 @@ extends ../../main/views/layout
 
 block content
     h1 Welcome to retrospective room #{room}
+    section(class="app", ng-app="retroApp", data-room="#{room}")
 
     script(type="text/javascript", src="/js/retro/test.js")

@@ -1,5 +1,6 @@
-var retroSocket = io(window.location.origin + '/retro');
+var retroSocket = io(window.location.origin + '/retro'),
+    appElement = document.querySelector('.app'),
+    room = appElement.attributes['data-room'].value;
 
-retroSocket.on('connection:accepted', function(msg) {
-    console.log('Connection accepted!', msg);
-});
+
+retroSocket.emit('join:retro', room);

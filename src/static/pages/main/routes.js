@@ -35,6 +35,7 @@ router.post('/sign-in', function(req, res, next) {
     } else {
         // login failed
         res.render('login-main', {
+            redirectTo: nextPage,
             error: {
                 message: 'Try again'
             }

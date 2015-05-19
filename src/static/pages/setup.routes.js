@@ -33,20 +33,22 @@ module.exports = function(app, io, session) {
                 }
                 var moduleNamespace = io.of('/' + namespace);
                 moduleNamespace.use(sioSession(session));
-                moduleNamespace.on('connection', connectionHandler);
+                moduleNamespace.on('connection', function(socket) {
+                    connectionHandler(socket, moduleNamespace);
+                });
             });
         }
     });
 };
 
 // Looks for modules synchronously in the file system. Modules structure:
-//  pages/
-//    +-- moduleA/
-//      + -- views/
-//      + -- routes.js
-//    +-- moduleB/
-//      + -- views/
-//      + -- routes.js
+//   pages/
+//     +-- moduleA/
+//       + -- views/
+//       + -- routes.js
+//     +-- moduleB/
+//       + -- views/
+//       + -- routes.js
 function getAvailableModules() {
     var files = fs.readdirSync(__dirname),
         modules = {

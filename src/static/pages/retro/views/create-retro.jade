@@ -2,3 +2,10 @@ extends ../../main/views/layout
 
 block content
     h1 Create new retrospective
+
+    form(method="POST", action="/retro/create")
+        input(type="text", name="name", placeholder="Name for the new retro", required="true")
+        input(type="submit", value="Create")
+
+    if error
+        p.error= error.message

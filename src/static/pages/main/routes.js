@@ -26,10 +26,12 @@ router.get('/log-out', function(req, res) {
 //   - body.username: username - required
 //   - body.password: user's password - required
 router.post('/sign-in', function(req, res, next) {
-    var userKey = sessionsManager.login(req.body.username, req.body.password);
+    var userKey = sessionsManager.login(req.body.username, req.body.password),
+        nextPage = req.body.redirectTo || '/';
+
     if (userKey) {
         req.session.userKey = userKey;
-        res.redirect('/');
+        res.redirect(nextPage);
     } else {
         // login failed
         res.render('login-main', {

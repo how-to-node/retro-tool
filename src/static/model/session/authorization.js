@@ -5,7 +5,9 @@ function restrictToLoggedIn(req, res, next) {
     if (user !== null) {
         next();
     } else {
-        res.redirect('/unauthorized');
+        res.render('login-main', {
+            redirectTo: req.originalUrl
+        });
     }
 }
 

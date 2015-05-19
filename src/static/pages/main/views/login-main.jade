@@ -6,5 +6,7 @@ block content
         input(type="text", placeholder="Username", name="username")
         input(type="password", placeholder="Password", name="password")
         input(type="submit", value="Go")
+        if redirectTo 
+            input(type="hidden", name="redirectTo", value="#{redirectTo}")
     if error
         p= error.message

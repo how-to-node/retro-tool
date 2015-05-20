@@ -9,14 +9,31 @@ module.exports = function(grunt) {
         // grunt-contrib-copy
         copy: {
             // copy server side files
-            // $ grunt copy:static
             static: {
                 files: [
                     {
                         expand: true,
-                        cwd: 'src/',
-                        src: ['static/**'],
-                        dest: 'dist'
+                        cwd: 'src/static',
+                        src: ['**'],
+                        dest: 'dist/static'
+                    }
+                ]
+            },
+
+            // copy client side files
+            client: {
+                files: [
+                    {
+                        expand: true,
+                        cwd: 'src/public/',
+                        src: ['js/**'],
+                        dest: 'dist/public'
+                    },
+                    {
+                        expand: true,
+                        cwd: 'src/public/',
+                        src: ['css/**'],
+                        dest: 'dist/public'
                     }
                 ]
             }
@@ -25,28 +42,59 @@ module.exports = function(grunt) {
         // grunt-contrib-clean
         clean: {
             // clean dist folder
-            // $ grunt clean:dist
             dist: {
-                src: ['dist/*', 'dist']
+                src: ['dist']
             }
         },
 
+        // grunt-contrib-concat
         concat: {
+            // concatenate all bower dependencies
             bowerDependencies: {
                 src: getBowerDependencies(),
                 dest: 'dist/public/js/dependencies.js'
             }
+        },
+
+        // grunt-express-server
+        express: {
+            options: {
+                background: true
+            },
+            start: {
+                options: {
+                    script: 'dist/static/app.js'
+                }
+            }
+        },
+
+        // grunt-contrib-watch
+        watch: {
+            options: {
+                forever: true,
+                livereload: true
+            },
+            public: {
+                files: ['src/public/**/*.js', 'src/public/**/*.css'],
+                tasks: ['copy:client']
+            }
+
         }
     });
 
     grunt.loadNpmTasks('grunt-contrib-clean');
     grunt.loadNpmTasks('grunt-contrib-copy');
     grunt.loadNpmTasks('grunt-contrib-concat');
+    grunt.loadNpmTasks('grunt-express-server');
+    grunt.loadNpmTasks('grunt-contrib-watch');
 
     grunt.registerTask('serve:dev', [
         'clean:dist',
         'copy:static',
-        'concat:bowerDependencies'
+        'copy:client',
+        'concat:bowerDependencies',
+        'express:start',
+        'watch:public'
     ]);
 }
 

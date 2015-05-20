@@ -10,9 +10,5 @@ $ bower install
 
 ####Run application
 ```
-$ node src/static/app.js
-```
-Or
-```
-$ npm start
+$ grunt serve:dev
 ```

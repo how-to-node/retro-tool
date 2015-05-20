@@ -1,3 +1,6 @@
+// modules require
+var util = require('util');
+
 // todo: When he have persistance, populate this pool
 var retros = {};
 
@@ -15,7 +18,9 @@ function Retro(name, ownerUsername, participants) {
     this.status = retroStatus[0];
 
     // the owner is a participant of the retro
-    this.participants.push(ownerUsername);
+    if (this.participants.indexOf(ownerUsername) === -1) {
+        this.participants.push(ownerUsername);
+    }
 
     this.items = {
         positives: [],
@@ -41,6 +46,8 @@ module.exports = {
 
         var retro = new Retro(name, owner, participants);
         retros[name] = retro;
+
+        console.log('INFO - New Retro created: ', util.inspect(retro));
 
         return true;
     },

@@ -3,6 +3,7 @@ var express = require('express'),
     authorization = require('../../model/session/authorization'),
     sessionManager = require('../../model/session/manager'),
     retrosManager = require('../../model/retros/manager'),
+    usersManager = require('../../model/users/manager'),
     router = express.Router();
 
 // retros entry point - GET
@@ -12,7 +13,9 @@ router.get('/', authorization.restrictToLoggedIn, function(req, res, next) {
 
 // create a new retro - GET
 router.get('/create', authorization.restrictToLoggedIn, function(req, res, next) {
-    res.render('create-retro', {});
+    res.render('create-retro', {
+        usernames: usersManager.getAllUsernames()
+    });
 });
 
 // create a new retro - POST
@@ -20,12 +23,13 @@ router.post('/create', authorization.restrictToLoggedIn, function(req, res, next
     var retroName = req.body.name,
         user = sessionManager.getLoggedUser(req.session);
 
-    if (retrosManager.createRetro(retroName, user.username, [])) {
+    if (retrosManager.createRetro(retroName, user.username, req.body.participants)) {
         // go to room
         res.redirect('/retro/' + retroName);
     } else {
         // couldn't create retro
         res.render('create-retro', {
+            usernames: usersManager.getAllUsernames(),
             error: {
                 message: 'Retro name already taken'
             }
@@ -39,8 +43,6 @@ router.post('/create', authorization.restrictToLoggedIn, function(req, res, next
 router.get('/:room', authorization.restrictToLoggedIn, function(req, res, next) {
     var room = req.params.room,
         user = sessionManager.getLoggedUser(req.session);
-
-    console.log(user.username + ' is trying to join ' + room);
 
     if (!retrosManager.isActiveRetro(room) || !retrosManager.hasAccess(room, user.username)) {
         res.render('not-found-retro', {});
@@ -60,9 +62,14 @@ function retroWebSocketHandler(client, ns) {
     client.on('join:retro', function(room) {
         var user = sessionManager.getLoggedUser(client.handshake.session);
 
+        console.log('Socket - INFO: ' + user.username + ' trying to join ' + room);
+
         if (!user || !retrosManager.hasAccess(room, user.username) || !retrosManager.isActiveRetro(room)) {
+            console.log('Socket - INFO: Couldnt join');
             return;
         }
+
+        console.log('Socket - INFO: Success');
 
         setupSocket(client, room, user);
     });

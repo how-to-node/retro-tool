@@ -4,8 +4,17 @@ block content
     h1 Create new retrospective
 
     form(method="POST", action="/retro/create")
-        input(type="text", name="name", placeholder="Name for the new retro", required="true")
-        input(type="submit", value="Create")
+        div.retro-name-input
+            input(type="text", name="name", placeholder="Name for the new retro", required="true")
+
+        // todo - replace with autocomplete
+        div.retro-participants-input
+            select(multiple, name="participants")
+                each username in usernames
+                    option(value="#{username}")= username
+
+        div.submit
+            input(type="submit", value="Create")
 
     if error
         p.error= error.message

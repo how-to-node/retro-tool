@@ -8,5 +8,13 @@ module.exports = {
      */
     getUserData: function getUserData(username) {
         return users[username] || null;
+    },
+
+    /**
+     * Retrieves all usernames
+     * @return {array}
+     */
+    getAllUsernames: function() {
+        return Object.keys(users);
     }
 };

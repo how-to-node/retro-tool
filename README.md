@@ -1,7 +1,14 @@
 #Retro Tool
 
 ##To start the app:
-```javascript
+
+####Install dependencies
+```
 $ npm install
-$ node src/static/app.js
+$ bower install
+```
+
+####Run application
+```
+$ grunt serve:dev
 ```

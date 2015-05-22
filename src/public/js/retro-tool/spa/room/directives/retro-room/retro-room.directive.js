@@ -5,7 +5,7 @@
         .module('retroRoom')
         .directive('retroRoom', retroRoomDirective);
 
-    function retroRoomDirective(RoomSocketClient) {
+    function retroRoomDirective() {
         return {
             bindToController: true,
             controller: RetroRoomController,

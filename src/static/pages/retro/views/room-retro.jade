@@ -1,7 +1,17 @@
 extends ../../main/views/layout
 
 block content
-    h1 Welcome to retrospective room #{room}
-    section(class="app", ng-app="retroApp", data-room="#{room}")
+    section(class="app", ng-app="retroRoom", data-room="#{room}")
+        retro-room
 
-    script(type="text/javascript", src="/js/retro/test.js")
+    script(type="text/javascript", src="/js/dependencies.js")
+    script(type="text/javascript", src="/js/retro-tool/spa/room/retro-room.module.js")
+    script(type="text/javascript", src="/js/retro-tool/spa/room/directives/retro-room/retro-room.directive.js")
+    script(type="text/javascript", src="/js/retro-tool/spa/room/services/room-socket/room-socket.factory.js")
+    
+    script(type="text/html", src="/js/retro-tool/spa/room/directives/retro-room/retro-room.html")
+    
+    script(type="text/javascript").
+        angular.module('retroRoom').constant('RetroConfig', {
+            room: '#{room}'
+        });

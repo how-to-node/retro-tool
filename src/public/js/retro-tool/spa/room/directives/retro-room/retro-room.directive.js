@@ -39,7 +39,6 @@
 
         function loadRetroData(room) {
             vm.room = room;
-            console.log(room);
         }
 
         function connectionRefused(msg) {

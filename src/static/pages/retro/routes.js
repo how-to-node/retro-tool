@@ -90,7 +90,6 @@ function retroWebSocketHandler(client, ns) {
             room = null;
         });
 
-
         // room bindings - info sent to client on room changes
         room.on('item:added', function(item) {
             clientSocket.emit('item:added', item);

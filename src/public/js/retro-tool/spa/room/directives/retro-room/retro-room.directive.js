@@ -35,7 +35,6 @@
             } else if (item.sign === 'negative') {
                 vm.room.items.negatives.push(item);
             }
-            vm.room.items[item.sign].push(item);
         });
 
         function loadRetroData(room) {

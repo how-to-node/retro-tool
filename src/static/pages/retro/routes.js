@@ -69,17 +69,32 @@ function retroWebSocketHandler(client, ns) {
             return;
         }
 
-        console.log('Socket - INFO: Success');
-
         setupSocket(client, room, user);
     });
 
     // relating client with retro room
-    function setupSocket(clientSocket, room, user) {
-        clientSocket.join(room);
+    function setupSocket(clientSocket, roomName, user) {
+        var room = retrosManager.getRetro(roomName);
+
+        clientSocket.join(roomName);
 
         clientSocket.emit('connection:accepted', room);
-        clientSocket.broadcast.to(room).emit('user:joined', user.username);
+        clientSocket.broadcast.to(roomName).emit('user:joined', user.username);
+
+        clientSocket.on('item:add', function(newItem) {
+            room.addItem(newItem.description, newItem.sign, user.username);
+        });
+
+        clientSocket.on('disconnect', function() {
+            room.removeAllListeners('item:added');;
+            room = null;
+        });
+
+
+        // room bindings - info sent to client on room changes
+        room.on('item:added', function(item) {
+            clientSocket.emit('item:added', item);
+        });
     }
 }
 

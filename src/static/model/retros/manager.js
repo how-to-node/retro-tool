@@ -1,39 +1,9 @@
 // modules require
-var util = require('util');
+var util = require('util'),
+    Retro = require('./retro');
 
 // todo: When he have persistance, populate this pool
 var retros = {};
-
-// posible status of a retro
-var retroStatus = ['adding-items', 'voting', 'adding-actions-to-take', 'closed'];
-
-/**
- * @constructor Retro
- */
-function Retro(name, ownerUsername, participants) {
-
-    this.name = name;
-    this.owner = ownerUsername;
-    this.participants = participants || [];
-    this.status = retroStatus[0];
-
-    // the owner is a participant of the retro
-    if (this.participants.indexOf(ownerUsername) === -1) {
-        this.participants.push(ownerUsername);
-    }
-
-    this.items = {
-        positives: [],
-        negatives: []
-    };
-}
-
-/**
- * Determines if the retro is in one of these: adding-items, voting, adding-actions-to-take
- */
-Retro.prototype.isActive = function() {
-    return retroStatus.indexOf(this.status) < 3;
-};
 
 module.exports = {
     /**
@@ -86,6 +56,10 @@ module.exports = {
          }
 
          return retro.participants.indexOf(username) > -1;
+     },
+
+     getRetro: function(retroName) {
+         return retros[retroName] || null;
      }
 
 };

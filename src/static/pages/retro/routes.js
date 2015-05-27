@@ -95,7 +95,7 @@ function retroWebSocketHandler(client, ns) {
 
         clientSocket.on('disconnect', function() {
             console.log('Socket - INFO: %s left %s', user.username, roomName);
-
+            ns.to(roomName).emit('user:left', user.username);
             room = null;
         });
     }

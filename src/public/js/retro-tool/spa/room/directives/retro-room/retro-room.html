@@ -1,0 +1,33 @@
+<div ng-if="RetroRoomVm.room">
+    <h1>{{RetroRoomVm.room.name}}</h1>
+    <span>{{RetroRoomVm.statusMsgs[RetroRoomVm.room.status]}}</span>
+
+    <div class="items-wrapper">
+        <div class="positives">
+            <h2>Positives</h2>
+            <ul>
+                <li ng-repeat="item in RetroRoomVm.room.items.positives">
+                    <p>{{item.description}}</p>
+                    <span>By {{item.author}}</span>
+                </li>
+            </ul>
+        </div>
+        <div class="negatives">
+            <h2>Negatives</h2>
+            <ul>
+                <li ng-repeat="item in RetroRoomVm.room.items.negatives">
+                    <p>{{item.description}}</p>
+                    <span>By {{item.author}}</span>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="add-item-wrapper">
+        <textarea ng-model="RetroRoomVm.newItem.description"></textarea>
+        <input type="radio" value="positive" ng-model="RetroRoomVm.newItem.sign">+
+        <input type="radio" value="negative" ng-model="RetroRoomVm.newItem.sign">-
+        <button ng-click="RetroRoomVm.addItem(RetroRoomVm.newItem)">Add</button>
+    </div>
+
+</div>

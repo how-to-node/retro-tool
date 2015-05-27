@@ -75,7 +75,7 @@ module.exports = function(grunt) {
                 livereload: true
             },
             public: {
-                files: ['src/public/**/*.js', 'src/public/**/*.css'],
+                files: ['src/public/**/*'],
                 tasks: ['copy:client']
             }
 

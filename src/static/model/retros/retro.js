@@ -63,7 +63,7 @@ Retro.prototype.addItem = function(description, sign, author) {
         return false;
     }
 
-    return true;
+    return newItem;
 }
 
 module.exports = Retro;

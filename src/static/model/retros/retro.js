@@ -1,5 +1,6 @@
 // modules require
-var util = require('util');
+var util = require('util'),
+    _ = require('lodash');
 
 // items' signs
 var ITEM_SIGN = {
@@ -16,8 +17,10 @@ var retroStatus = ['adding-items', 'voting', 'adding-actions-to-take', 'closed']
 function Retro(name, ownerUsername, participants) {
     this.name = name;
     this.owner = ownerUsername;
-    this.participants = typeof participants === 'array' ? participants : [participants];
+    this.participants = participants instanceof Array ? participants : [participants];
     this.status = retroStatus[0];
+
+    this.$$itemsCount = 0;
 
     // the owner is a participant of the retro
     if (this.participants.indexOf(ownerUsername) === -1) {
@@ -48,6 +51,7 @@ Retro.prototype.addItem = function(description, sign, author) {
     }
 
     var newItem = {
+        id: ++this.$$itemsCount,
         author: author,
         description: description,
         sign: sign
@@ -56,7 +60,7 @@ Retro.prototype.addItem = function(description, sign, author) {
     // sign validations
     if (sign === ITEM_SIGN.POSITIVE) {
         this.items.positives.push(newItem);
-    } else if(sign === ITEM_SIGN.NEGATIVE) {
+    } else if (sign === ITEM_SIGN.NEGATIVE) {
         this.items.negatives.push(newItem);
     } else {
         console.error('ERROR - Sign %s does not exist', sign);
@@ -65,5 +69,22 @@ Retro.prototype.addItem = function(description, sign, author) {
 
     return newItem;
 }
+
+Retro.prototype.removeItem = function(itemId) {
+    return removeIfFound(this.items.positives, itemId) || removeIfFound(this.items.negatives, itemId);
+
+    function removeIfFound(itemsArray, itemId) {
+        var item = _.find(itemsArray, function(item) {
+            return item.id === itemId;
+        });
+
+        if (item) {
+            itemsArray.splice(itemsArray.indexOf(item), 1);
+            return true;
+        }
+
+        return false;
+    }
+};
 
 module.exports = Retro;

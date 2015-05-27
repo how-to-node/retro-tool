@@ -52,7 +52,8 @@ router.get('/:room', authorization.restrictToLoggedIn, function(req, res, next) 
 
     res.render('room-retro', {
         room: room,
-        isOwner: retrosManager.isRetroOwner(room, user.username)
+        isOwner: retrosManager.isRetroOwner(room, user.username),
+        username: user.username
     });
 });
 

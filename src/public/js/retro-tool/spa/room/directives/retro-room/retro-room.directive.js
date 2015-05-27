@@ -22,7 +22,10 @@
         var vm = this;
 
         vm.statusMsgs = RETRO_STATUS_LABELS;
+        vm.loggedUsername = RetroConfig.username;
+
         vm.addItem = addItem;
+        vm.removeItem = removeItem;
 
         // requesting retro data
         RoomSocketClient
@@ -34,6 +37,30 @@
                 vm.room.items.positives.push(item);
             } else if (item.sign === 'negative') {
                 vm.room.items.negatives.push(item);
+            }
+        });
+
+        RoomSocketClient.on('item:removed', function(itemId) {
+            if (!removeIfFound(vm.room.items.positives, itemId)) {
+                removeIfFound(vm.room.items.negatives, itemId);
+            }
+
+            function removeIfFound(itemsList, itemId) {
+                var foundIndex = -1;
+
+                for (var i = 0; i < itemsList.length && foundIndex === -1; i++) {
+                    if (itemsList[i].id === itemId) {
+                        foundIndex = i;
+                    }
+                }
+
+                if (foundIndex > -1) {
+                    console.log('Item %d has been removed', itemId);
+                    itemsList.splice(foundIndex, 1);
+                    return true;
+                }
+
+                return false;
             }
         });
 
@@ -49,6 +76,11 @@
             console.log('INFO - Trying to add new item', item);
             RoomSocketClient.emit('item:add', item);
             vm.newItem = {};
+        }
+
+        function removeItem(item) {
+            console.log('Removing', item);
+            RoomSocketClient.emit('item:remove', item.id);
         }
     }
 })();

@@ -1,6 +1,5 @@
 // modules require
-var util = require('util'),
-    events = require("events");
+var util = require('util');
 
 // items' signs
 var ITEM_SIGN = {
@@ -15,9 +14,6 @@ var retroStatus = ['adding-items', 'voting', 'adding-actions-to-take', 'closed']
  * @constructor Retro
  */
 function Retro(name, ownerUsername, participants) {
-
-    events.EventEmitter.apply(this);
-
     this.name = name;
     this.owner = ownerUsername;
     this.participants = typeof participants === 'array' ? participants : [participants];
@@ -34,8 +30,6 @@ function Retro(name, ownerUsername, participants) {
     };
 }
 
-util.inherits(Retro, events.EventEmitter);
-
 /**
  * Determines if the retro is in one of these: adding-items, voting, adding-actions-to-take
  */
@@ -44,12 +38,13 @@ Retro.prototype.isActive = function() {
 };
 
 Retro.prototype.addItem = function(description, sign, author) {
+    // validations
     if (this.participants.indexOf(author) === -1) {
-        console.error('INFO - Guest ' + author + ' is not a participant of ' + this.name);
-        return;
-    } else if(!description || !sign || !author) {
-        console.error('INFO - Missing data');
-        return;
+        console.error('ERROR - Guest %s is not a participant of %s', author, this.name);
+        return false;
+    } else if (!description || !sign || !author) {
+        console.error('ERROR - Missing data');
+        return false;
     }
 
     var newItem = {
@@ -58,16 +53,17 @@ Retro.prototype.addItem = function(description, sign, author) {
         sign: sign
     };
 
+    // sign validations
     if (sign === ITEM_SIGN.POSITIVE) {
         this.items.positives.push(newItem);
     } else if(sign === ITEM_SIGN.NEGATIVE) {
         this.items.negatives.push(newItem);
     } else {
-        console.error('INFO - Sign ' + sign + ' does not exist.');
-        return;
+        console.error('ERROR - Sign %s does not exist', sign);
+        return false;
     }
 
-    this.emit('item:added', newItem);
+    return true;
 }
 
 module.exports = Retro;

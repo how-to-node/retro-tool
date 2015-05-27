@@ -65,34 +65,38 @@ function retroWebSocketHandler(client, ns) {
         console.log('Socket - INFO: ' + user.username + ' trying to join ' + room);
 
         if (!user || !retrosManager.hasAccess(room, user.username) || !retrosManager.isActiveRetro(room)) {
-            console.log('Socket - INFO: Couldnt join');
+            client.emit('connection:refused', 'Not allowed');
             return;
         }
 
-        setupSocket(client, room, user);
+        setupSocket(client, room, user, ns);
     });
 
     // relating client with retro room
-    function setupSocket(clientSocket, roomName, user) {
+    function setupSocket(clientSocket, roomName, user, ns) {
         var room = retrosManager.getRetro(roomName);
 
         clientSocket.join(roomName);
 
+        // notifying guest joined
+        console.log('Socket - INFO: User %s has joined %s', user.username, roomName);
         clientSocket.emit('connection:accepted', room);
-        clientSocket.broadcast.to(roomName).emit('user:joined', user.username);
+        ns.to(roomName).emit('user:joined', user.username);
 
+        // start: retro room events
         clientSocket.on('item:add', function(newItem) {
-            room.addItem(newItem.description, newItem.sign, user.username);
+            var success = room.addItem(newItem.description, newItem.sign, user.username);
+            if (success) {
+                console.log('Socket - INFO: Item added to %s by %s', roomName, user.username);
+                ns.to(roomName).emit('item:added', newItem);
+            }
         });
+        // end: retro room events
 
         clientSocket.on('disconnect', function() {
-            room.removeAllListeners('item:added');;
+            console.log('Socket - INFO: %s left %s', user.username, roomName);
+            ns.to(roomName).emit('user:left', user.username);
             room = null;
-        });
-
-        // room bindings - info sent to client on room changes
-        room.on('item:added', function(item) {
-            clientSocket.emit('item:added', item);
         });
     }
 }

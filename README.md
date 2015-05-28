@@ -12,3 +12,9 @@ $ bower install
 ```
 $ grunt serve:dev
 ```
+
+##Bugs
+https://github.com/how-to-node/retro-tool/issues
+
+##Wiki
+https://github.com/how-to-node/retro-tool/wiki

@@ -6,18 +6,30 @@
         <div class="positives">
             <h2>Positives</h2>
             <ul>
-                <li ng-repeat="item in RetroRoomVm.room.items.positives">
-                    <p>{{item.description}}</p>
-                    <span>By {{item.author}}</span>
+                <li ng-repeat="item in RetroRoomVm.room.items.positives" ng-init="canEdit = (item.author === RetroRoomVm.loggedUsername)">
+                    <div>
+                        <p>{{item.description}}</p>
+                        <span>By {{canEdit ? 'Me' : item.author}}</span>
+                        <span class="edit-panel" ng-if="canEdit">
+                            <a href ng-click="RetroRoomVm.removeItem(item)">Delete</a>
+                            <a href>Edit</a>
+                        </span>
+                    </div>
                 </li>
             </ul>
         </div>
         <div class="negatives">
             <h2>Negatives</h2>
             <ul>
-                <li ng-repeat="item in RetroRoomVm.room.items.negatives">
-                    <p>{{item.description}}</p>
-                    <span>By {{item.author}}</span>
+                <li ng-repeat="item in RetroRoomVm.room.items.negatives" ng-init="canEdit = (item.author === RetroRoomVm.loggedUsername)">
+                    <div>
+                        <p>{{item.description}}</p>
+                        <span>By {{canEdit ? 'Me' : item.author}}</span>
+                        <span class="edit-panel" ng-if="canEdit">
+                            <a href ng-click="RetroRoomVm.removeItem(item)">Delete</a>
+                            <a href>Edit</a>
+                        </span>
+                    </div>
                 </li>
             </ul>
         </div>

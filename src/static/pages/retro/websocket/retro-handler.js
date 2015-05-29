@@ -39,7 +39,7 @@ function retroWebSocketHandler(client, ns) {
         });
 
         clientSocket.on('item:remove', function(itemId) {
-            var success = room.removeItem(itemId);
+            var success = room.removeItem(itemId, user.username);
             if (success) {
                 console.log('Socket - INFO: Item %d removed from %s by %s', itemId, roomName, user.username);
                 ns.to(roomName).emit('item:removed', itemId);

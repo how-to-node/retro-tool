@@ -70,7 +70,7 @@ Retro.prototype.addItem = function(description, sign, author) {
     return newItem;
 }
 
-Retro.prototype.removeItem = function(itemId) {
+Retro.prototype.removeItem = function(itemId, who) {
     return removeIfFound(this.items.positives, itemId) || removeIfFound(this.items.negatives, itemId);
 
     function removeIfFound(itemsArray, itemId) {
@@ -78,7 +78,7 @@ Retro.prototype.removeItem = function(itemId) {
             return item.id === itemId;
         });
 
-        if (item) {
+        if (item && item.author === who) {
             itemsArray.splice(itemsArray.indexOf(item), 1);
             return true;
         }

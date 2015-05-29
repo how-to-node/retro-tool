@@ -1,5 +1,6 @@
 var fs = require('fs'),
-    path = require('path');
+    path = require('path'),
+    glob = require('glob');
 
 module.exports = function(grunt) {
 
@@ -56,6 +57,27 @@ module.exports = function(grunt) {
             }
         },
 
+        // grunt-contrib-less
+        less: {
+            dev: {
+                files: {
+                    'dist/public/css/main.css': 'src/public/less/main.less'
+                }
+            },
+
+            // TODO: verify cleancss is still in there
+            // TODO: csso, minifiycss
+            prod: {
+                options: {
+                    compress: true,
+                    cleancss: true
+                },
+                files: {
+                    'dist/public/css/main.css': 'src/public/less/main.less'
+                }
+            }
+        },
+
         // grunt-express-server
         express: {
             options: {
@@ -85,6 +107,7 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-contrib-clean');
     grunt.loadNpmTasks('grunt-contrib-copy');
     grunt.loadNpmTasks('grunt-contrib-concat');
+    grunt.loadNpmTasks('grunt-contrib-less');
     grunt.loadNpmTasks('grunt-express-server');
     grunt.loadNpmTasks('grunt-contrib-watch');
 
@@ -93,6 +116,7 @@ module.exports = function(grunt) {
         'copy:static',
         'copy:client',
         'concat:bowerDependencies',
+        'less:dev',
         'express:start',
         'watch:public'
     ]);
@@ -101,16 +125,14 @@ module.exports = function(grunt) {
 // retrieves an array with paths to bower dependencies
 function getBowerDependencies() {
     var root = path.join(__dirname, 'bower_components'),
-        files = fs.readdirSync(root),
+        bowerComponents = fs.readdirSync(root),
         dependencies = [];
 
-    files.forEach(function(file) {
-        var jsDep = path.join(root, file, file + '.js');
-
-        if (fs.existsSync(jsDep)) {
-            dependencies.push(jsDep);
-        }
+    bowerComponents.forEach(function(bowerComponent) {
+        var files = glob.sync(path.join(root, bowerComponent, '**', bowerComponent + '.js'));
+        dependencies.cocat(files);
     });
 
+    console.log('dependencies: ', dependencies);
     return dependencies;
 }

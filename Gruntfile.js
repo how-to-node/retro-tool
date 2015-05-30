@@ -1,9 +1,8 @@
 var fs = require('fs'),
     path = require('path'),
-    glob = require('glob');
+    mainBowerFiles = require('main-bower-files');;
 
 module.exports = function(grunt) {
-
     grunt.initConfig({
         pkg: grunt.file.readJSON('package.json'),
 
@@ -37,6 +36,23 @@ module.exports = function(grunt) {
                         dest: 'dist/public'
                     }
                 ]
+            },
+
+            bowerDependencies: {
+                files: [
+                    {
+                        expand: true,
+                        flatten: true,
+                        src: mainBowerFiles('**/*.css'),
+                        dest: 'dist/public/css'
+                    },
+                    {
+                        expand: true,
+                        flatten: true,
+                        src: mainBowerFiles('**/fonts/*'),
+                        dest: 'dist/public/fonts'
+                    }
+                ]
             }
         },
 
@@ -51,8 +67,8 @@ module.exports = function(grunt) {
         // grunt-contrib-concat
         concat: {
             // concatenate all bower dependencies
-            bowerDependencies: {
-                src: getBowerDependencies(),
+            bowerDependenciesJs: {
+                src: mainBowerFiles('**/*.js'),
                 dest: 'dist/public/js/dependencies.js'
             }
         },
@@ -64,18 +80,6 @@ module.exports = function(grunt) {
                     'dist/public/css/main.css': 'src/public/less/main.less'
                 }
             },
-
-            // TODO: verify cleancss is still in there
-            // TODO: csso, minifiycss
-            prod: {
-                options: {
-                    compress: true,
-                    cleancss: true
-                },
-                files: {
-                    'dist/public/css/main.css': 'src/public/less/main.less'
-                }
-            }
         },
 
         // grunt-express-server
@@ -97,10 +101,9 @@ module.exports = function(grunt) {
                 livereload: true
             },
             public: {
-                files: ['src/public/**/*'],
-                tasks: ['copy:client']
+                files: ['src/**/*'],
+                tasks: ['copy:static', 'copy:client', 'less:dev']
             }
-
         }
     });
 
@@ -115,24 +118,10 @@ module.exports = function(grunt) {
         'clean:dist',
         'copy:static',
         'copy:client',
-        'concat:bowerDependencies',
+        'copy:bowerDependencies',
+        'concat:bowerDependenciesJs',
         'less:dev',
         'express:start',
-        'watch:public'
+        'watch:public',
     ]);
-}
-
-// retrieves an array with paths to bower dependencies
-function getBowerDependencies() {
-    var root = path.join(__dirname, 'bower_components'),
-        bowerComponents = fs.readdirSync(root),
-        dependencies = [];
-
-    bowerComponents.forEach(function(bowerComponent) {
-        var files = glob.sync(path.join(root, bowerComponent, '**', bowerComponent + '.js'));
-        dependencies.cocat(files);
-    });
-
-    console.log('dependencies: ', dependencies);
-    return dependencies;
 }

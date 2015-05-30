@@ -122,6 +122,6 @@ module.exports = function(grunt) {
         'concat:bowerDependenciesJs',
         'less:dev',
         'express:start',
-        'watch:public',
+        'watch:public'
     ]);
 }

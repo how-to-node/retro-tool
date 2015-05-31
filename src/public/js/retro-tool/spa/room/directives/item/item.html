@@ -1,0 +1,15 @@
+<div>
+    <p>{{ItemVm.item.description}}</p>
+    <span>By {{ItemVm.isEditable ? 'Me' : ItemVm.item.author}}</span>
+    <div ng-if="!ItemVm.isItemAuthor"> <!-- Is votable only if is not the author -->
+        <a href ng-if="ItemVm.votedByUser" ng-click="ItemVm.unvoteItem()">Remove vote</a>
+        <a href ng-if="!ItemVm.votedByUser" ng-click="ItemVm.voteItem()">Vote</a>
+    </div>
+    <ul>
+        <li ng-repeat="voter in ItemVm.item.votes">{{voter}}</li>
+    </ul>
+    <span class="edit-panel" ng-if="ItemVm.isEditable">
+        <a href ng-click="ItemVm.removeItem()">Delete</a>
+        <a href>Edit</a>
+    </span>
+</div>

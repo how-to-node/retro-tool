@@ -25,7 +25,6 @@
         vm.loggedUsername = RetroConfig.username;
 
         vm.addItem = addItem;
-        vm.removeItem = removeItem;
 
         // requesting retro data
         RoomSocketClient
@@ -64,6 +63,19 @@
             }
         });
 
+        RoomSocketClient.on('item:voted', updateVotes);
+        RoomSocketClient.on('item:unvoted', updateVotes);
+
+        function updateVotes(data) {
+            var itemId = data.item,
+                votes = data.votes,
+                item = findItem(itemId);
+
+            if (item) {
+                item.votes = votes;
+            }
+        }
+
         function loadRetroData(room) {
             vm.room = room;
         }
@@ -78,9 +90,18 @@
             vm.newItem = {};
         }
 
-        function removeItem(item) {
-            console.log('Removing', item);
-            RoomSocketClient.emit('item:remove', item.id);
+        function findItem(itemId) {
+            var i,
+                item = null,
+                items = vm.room.items.positives.concat(vm.room.items.negatives);
+
+            for (i = 0; i < items.length && !item; i++) {
+                if (items[i].id === itemId) {
+                    item = items[i];
+                }
+            }
+
+            return item;
         }
     }
 })();

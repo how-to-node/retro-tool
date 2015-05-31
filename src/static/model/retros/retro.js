@@ -54,7 +54,8 @@ Retro.prototype.addItem = function(description, sign, author) {
         id: ++this.$$itemsCount,
         author: author,
         description: description,
-        sign: sign
+        sign: sign,
+        votes: []
     };
 
     // sign validations
@@ -85,6 +86,49 @@ Retro.prototype.removeItem = function(itemId, who) {
 
         return false;
     }
+};
+
+Retro.prototype.addVoter = function(who, itemId) {
+    var item = this.findItem(itemId);
+    console.log(item, who);
+    if (item && item.author !== who && item.votes.indexOf(who) === -1) {
+        item.votes.push(who);
+        return item.votes;
+    }
+    return null;
+};
+
+Retro.prototype.removeVoter = function(who, itemId) {
+    var item = this.findItem(itemId),
+        index;
+
+    if (item) {
+        index = item.votes.indexOf(who);
+        if (index > -1) {
+            item.votes.splice(index, 1);
+            return item.votes;
+        }
+    }
+
+    return null;
+};
+
+Retro.prototype.findItem = function(itemId) {
+    var item = find(this.items.positives, itemId);
+
+    if (!item) {
+        item = find(this.items.negatives, itemId);
+    }
+
+    return item || null;
+
+    function find(items, itemId) {
+        var item = _.find(items, function(item) {
+            return item.id === itemId;
+        });
+
+        return item || null;
+    };
 };
 
 module.exports = Retro;

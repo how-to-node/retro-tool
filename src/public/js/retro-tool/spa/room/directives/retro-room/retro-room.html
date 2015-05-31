@@ -1,20 +1,13 @@
 <div ng-if="RetroRoomVm.room">
     <h1>{{RetroRoomVm.room.name}}</h1>
-    <span>{{RetroRoomVm.statusMsgs[RetroRoomVm.room.status]}}</span>
+    <span>({{RetroRoomVm.statusMsgs[RetroRoomVm.room.status]}})</span>
 
     <div class="items-wrapper">
         <div class="positives">
             <h2>Positives</h2>
             <ul>
                 <li ng-repeat="item in RetroRoomVm.room.items.positives" ng-init="canEdit = (item.author === RetroRoomVm.loggedUsername)">
-                    <div>
-                        <p>{{item.description}}</p>
-                        <span>By {{canEdit ? 'Me' : item.author}}</span>
-                        <span class="edit-panel" ng-if="canEdit">
-                            <a href ng-click="RetroRoomVm.removeItem(item)">Delete</a>
-                            <a href>Edit</a>
-                        </span>
-                    </div>
+                    <item data="item" is-editable="canEdit"></item>
                 </li>
             </ul>
         </div>
@@ -22,14 +15,7 @@
             <h2>Negatives</h2>
             <ul>
                 <li ng-repeat="item in RetroRoomVm.room.items.negatives" ng-init="canEdit = (item.author === RetroRoomVm.loggedUsername)">
-                    <div>
-                        <p>{{item.description}}</p>
-                        <span>By {{canEdit ? 'Me' : item.author}}</span>
-                        <span class="edit-panel" ng-if="canEdit">
-                            <a href ng-click="RetroRoomVm.removeItem(item)">Delete</a>
-                            <a href>Edit</a>
-                        </span>
-                    </div>
+                    <item data="item" is-editable="canEdit"></item>
                 </li>
             </ul>
         </div>

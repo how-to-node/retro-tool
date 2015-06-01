@@ -7,14 +7,16 @@ block content
     script(type="text/javascript", src="/js/retro-tool/spa/room/retro-room.module.js")
     script(type="text/javascript", src="/js/retro-tool/spa/room/directives/retro-room/retro-room.directive.js")
     script(type="text/javascript", src="/js/retro-tool/spa/room/directives/item/item.directive.js")
+    script(type="text/javascript", src="/js/retro-tool/spa/room/directives/retro-status-toggle/retro-status-toggle.directive.js")
     script(type="text/javascript", src="/js/retro-tool/spa/room/services/room-socket/room-socket.factory.js")
     
     script(type="text/html", src="/js/retro-tool/spa/room/directives/retro-room/retro-room.html")
     script(type="text/html", src="/js/retro-tool/spa/room/directives/item/item.html")
+    script(type="text/html", src="/js/retro-tool/spa/room/directives/retro-status-toggle/retro-status-toggle.html")
     
     script(type="text/javascript").
         angular.module('retroRoom').constant('RetroConfig', {
             room: '#{room}',
             username: '#{username}',
-            isOwner: '#{isOwner}'
+            isOwner: #{isOwner}
         });

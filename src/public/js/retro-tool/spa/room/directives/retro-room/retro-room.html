@@ -1,7 +1,6 @@
 <div ng-if="RetroRoomVm.room">
     <h1>{{RetroRoomVm.room.name}}</h1>
-    <span>({{RetroRoomVm.statusMsgs[RetroRoomVm.room.status]}})</span>
-
+    <retro-status-toggle is-owner="RetroRoomVm.isOwner" current-status="RetroRoomVm.room.status"></retro-status-toggle>
     <div class="items-wrapper">
         <div class="positives">
             <h2>Positives</h2>

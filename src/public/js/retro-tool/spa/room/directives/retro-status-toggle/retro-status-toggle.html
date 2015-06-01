@@ -1,0 +1,5 @@
+({{RetroStatusToggleVm.currentLabel}})
+<div class="status-control" ng-if="RetroStatusToggleVm.isOwner">
+    <button ng-if="!RetroStatusToggleVm.isLast" ng-click="RetroStatusToggleVm.goNext()">{{RetroStatusToggleVm.nextLabel}}</button>
+    <a href ng-if="!RetroStatusToggleVm.isFirst" ng-click="RetroStatusToggleVm.goPrev()">Go back to {{RetroStatusToggleVm.prevLabel}}</a>
+</div>

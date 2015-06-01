@@ -66,6 +66,16 @@ function retroWebSocketHandler(client, ns) {
                 });
             }
         });
+
+        clientSocket.on('status:next', function() {
+            room.nextStatus(user.username);
+            ns.to(roomName).emit('status:changed', room.status);
+        });
+
+        clientSocket.on('status:prev', function() {
+            room.prevStatus(user.username);
+            ns.to(roomName).emit('status:changed', room.status);
+        });
         // end: retro room events
 
         clientSocket.on('disconnect', function() {

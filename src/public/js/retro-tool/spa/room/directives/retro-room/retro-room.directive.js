@@ -23,6 +23,7 @@
 
         vm.statusMsgs = RETRO_STATUS_LABELS;
         vm.loggedUsername = RetroConfig.username;
+        vm.isOwner = RetroConfig.isOwner;
 
         vm.addItem = addItem;
 

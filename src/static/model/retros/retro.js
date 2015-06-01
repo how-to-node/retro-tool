@@ -40,6 +40,20 @@ Retro.prototype.isActive = function() {
     return retroStatus.indexOf(this.status) < 3;
 };
 
+Retro.prototype.nextStatus = function(who) {
+    var currentIndex = retroStatus.indexOf(this.status);
+    if (currentIndex > -1 && (currentIndex + 1) < retroStatus.length && who === this.owner) {
+        this.status = retroStatus[currentIndex + 1];
+    }
+};
+
+Retro.prototype.prevStatus = function(who) {
+    var currentIndex = retroStatus.indexOf(this.status);
+    if (currentIndex > -1 && (currentIndex - 1) >= 0 && who === this.owner) {
+        this.status = retroStatus[currentIndex - 1];
+    }
+};
+
 Retro.prototype.addItem = function(description, sign, author) {
     // validations
     if (this.participants.indexOf(author) === -1) {

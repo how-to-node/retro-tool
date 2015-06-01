@@ -14,7 +14,8 @@
             templateUrl: '/js/retro-tool/spa/room/directives/item/item.html',
             scope: {
                 item: '=data',
-                isEditable: '='
+                isEditable: '=',
+                retroStatus: '=status'
             }
         };
     }

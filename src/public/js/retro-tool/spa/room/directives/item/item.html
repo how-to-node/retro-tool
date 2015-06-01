@@ -1,14 +1,14 @@
 <div>
     <p>{{ItemVm.item.description}}</p>
     <span>By {{ItemVm.isEditable ? 'Me' : ItemVm.item.author}}</span>
-    <div ng-if="!ItemVm.isItemAuthor"> <!-- Is votable only if is not the author -->
+    <div ng-if="!ItemVm.isItemAuthor && ItemVm.retroStatus === 'voting'"> <!-- Is votable only if is not the author -->
         <a href ng-if="ItemVm.votedByUser" ng-click="ItemVm.unvoteItem()">Remove vote</a>
         <a href ng-if="!ItemVm.votedByUser" ng-click="ItemVm.voteItem()">Vote</a>
     </div>
-    <ul>
+    <ul ng-if="ItemVm.retroStatus === 'voting'">
         <li ng-repeat="voter in ItemVm.item.votes">{{voter}}</li>
     </ul>
-    <span class="edit-panel" ng-if="ItemVm.isEditable">
+    <span class="edit-panel" ng-if="ItemVm.isEditable && ItemVm.retroStatus === 'adding-items'">
         <a href ng-click="ItemVm.removeItem()">Delete</a>
         <a href>Edit</a>
     </span>

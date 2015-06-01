@@ -6,7 +6,7 @@
             <h2>Positives</h2>
             <ul>
                 <li ng-repeat="item in RetroRoomVm.room.items.positives" ng-init="canEdit = (item.author === RetroRoomVm.loggedUsername)">
-                    <item data="item" is-editable="canEdit"></item>
+                    <item status="RetroRoomVm.room.status" data="item" is-editable="canEdit"></item>
                 </li>
             </ul>
         </div>
@@ -14,13 +14,13 @@
             <h2>Negatives</h2>
             <ul>
                 <li ng-repeat="item in RetroRoomVm.room.items.negatives" ng-init="canEdit = (item.author === RetroRoomVm.loggedUsername)">
-                    <item data="item" is-editable="canEdit"></item>
+                    <item status="RetroRoomVm.room.status" data="item" is-editable="canEdit"></item>
                 </li>
             </ul>
         </div>
     </div>
 
-    <div class="add-item-wrapper">
+    <div class="add-item-wrapper" ng-if="RetroRoomVm.room.status === 'adding-items'">
         <textarea ng-model="RetroRoomVm.newItem.description"></textarea>
         <input type="radio" value="positive" ng-model="RetroRoomVm.newItem.sign">+
         <input type="radio" value="negative" ng-model="RetroRoomVm.newItem.sign">-

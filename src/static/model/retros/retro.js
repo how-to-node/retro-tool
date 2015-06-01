@@ -55,6 +55,9 @@ Retro.prototype.prevStatus = function(who) {
 };
 
 Retro.prototype.addItem = function(description, sign, author) {
+    if (!this.isAddingItems()) {
+        return false;
+    }
     // validations
     if (this.participants.indexOf(author) === -1) {
         console.error('ERROR - Guest %s is not a participant of %s', author, this.name);
@@ -86,6 +89,10 @@ Retro.prototype.addItem = function(description, sign, author) {
 }
 
 Retro.prototype.removeItem = function(itemId, who) {
+    if (!this.isAddingItems()) {
+        return false;
+    }
+
     return removeIfFound(this.items.positives, itemId) || removeIfFound(this.items.negatives, itemId);
 
     function removeIfFound(itemsArray, itemId) {
@@ -103,6 +110,10 @@ Retro.prototype.removeItem = function(itemId, who) {
 };
 
 Retro.prototype.addVoter = function(who, itemId) {
+    if (!this.isVoting()) {
+        return false;
+    }
+
     var item = this.findItem(itemId);
     console.log(item, who);
     if (item && item.author !== who && item.votes.indexOf(who) === -1) {
@@ -113,6 +124,10 @@ Retro.prototype.addVoter = function(who, itemId) {
 };
 
 Retro.prototype.removeVoter = function(who, itemId) {
+    if (!this.isVoting()) {
+        return null;
+    }
+
     var item = this.findItem(itemId),
         index;
 
@@ -143,6 +158,14 @@ Retro.prototype.findItem = function(itemId) {
 
         return item || null;
     };
+};
+
+Retro.prototype.isAddingItems = function() {
+    return this.status === retroStatus[0];
+};
+
+Retro.prototype.isVoting = function() {
+    return this.status === retroStatus[1];
 };
 
 module.exports = Retro;

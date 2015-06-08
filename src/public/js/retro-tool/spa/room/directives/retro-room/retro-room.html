@@ -14,7 +14,7 @@
                 <div class="panel-heading">Positives</div>
                 <div class="panel-body">
                     <ul>
-                        <li ng-repeat="item in RetroRoomVm.room.items.positives" ng-init="canEdit = (item.author === RetroRoomVm.loggedUsername)">
+                        <li class="items-list" ng-repeat="item in RetroRoomVm.room.items.positives" ng-init="canEdit = (item.author === RetroRoomVm.loggedUsername)">
                             <item status="RetroRoomVm.room.status" data="item" is-editable="canEdit"></item>
                         </li>
                     </ul>
@@ -26,7 +26,7 @@
                 <div class="panel-heading">Negatives</div>
                 <div class="panel-body">
                     <ul>
-                        <li ng-repeat="item in RetroRoomVm.room.items.negatives" ng-init="canEdit = (item.author === RetroRoomVm.loggedUsername)">
+                        <li class="items-list" ng-repeat="item in RetroRoomVm.room.items.negatives" ng-init="canEdit = (item.author === RetroRoomVm.loggedUsername)">
                             <item status="RetroRoomVm.room.status" data="item" is-editable="canEdit"></item>
                         </li>
                     </ul>

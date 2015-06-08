@@ -5,11 +5,13 @@
         <a href ng-if="ItemVm.votedByUser" ng-click="ItemVm.unvoteItem()">Remove vote</a>
         <a href ng-if="!ItemVm.votedByUser" ng-click="ItemVm.voteItem()">Vote</a>
     </div>
-    <ul ng-if="ItemVm.retroStatus === 'voting'">
+    <ul class="voters-list" ng-if="ItemVm.retroStatus === 'voting'">
         <li ng-repeat="voter in ItemVm.item.votes">{{voter}}</li>
     </ul>
-    <span class="edit-panel" ng-if="ItemVm.isEditable && ItemVm.retroStatus === 'adding-items'">
-        <a href ng-click="ItemVm.removeItem()">Delete</a>
-        <a href>Edit</a>
-    </span>
+
+</div>
+<div class="edit-panel" ng-if="ItemVm.isEditable && ItemVm.retroStatus === 'adding-items'">
+    <a href ng-click="ItemVm.removeItem()">
+        <span class="glyphicon glyphicon-remove remove" aria-hidden="true"></span>
+    </a>
 </div>

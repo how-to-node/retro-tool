@@ -25,6 +25,11 @@
         vm.loggedUsername = RetroConfig.username;
         vm.isOwner = RetroConfig.isOwner;
 
+        // new item defaulted to 'positive'
+        vm.newItem = {
+            sign: 'positive'
+        };
+
         vm.addItem = addItem;
 
         // requesting retro data
@@ -88,7 +93,9 @@
         function addItem(item) {
             console.log('INFO - Trying to add new item', item);
             RoomSocketClient.emit('item:add', item);
-            vm.newItem = {};
+            vm.newItem = {
+                sign: 'positive'
+            };
         }
 
         function findItem(itemId) {

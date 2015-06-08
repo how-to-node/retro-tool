@@ -1,5 +1,11 @@
-({{RetroStatusToggleVm.currentLabel}})
-<div class="status-control" ng-if="RetroStatusToggleVm.isOwner">
-    <button ng-if="!RetroStatusToggleVm.isLast" ng-click="RetroStatusToggleVm.goNext()">{{RetroStatusToggleVm.nextLabel}}</button>
-    <a href ng-if="!RetroStatusToggleVm.isFirst" ng-click="RetroStatusToggleVm.goPrev()">Go back to {{RetroStatusToggleVm.prevLabel}}</a>
-</div>
+<span>
+    <span>({{RetroStatusToggleVm.currentLabel}})</span>
+    <span class="status-control" ng-if="RetroStatusToggleVm.isOwner">
+        <a href class="btn btn-default" type="button" ng-if="!RetroStatusToggleVm.isLast" ng-click="RetroStatusToggleVm.goNext()">
+            {{RetroStatusToggleVm.nextLabel}}
+        </a>
+        <a href class="btn btn-default btn-xs" type="button" ng-if="!RetroStatusToggleVm.isFirst" ng-click="RetroStatusToggleVm.goPrev()">
+            Go back to {{RetroStatusToggleVm.prevLabel}}
+        </a>
+    </span>
+</span>

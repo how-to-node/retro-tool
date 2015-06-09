@@ -1,6 +1,6 @@
-<div>
-    <p>{{ItemVm.item.description}}</p>
-    <span>By {{ItemVm.isEditable ? 'Me' : ItemVm.item.author}}</span>
+<div class="item-wrapper">
+    <p class="description">{{ItemVm.item.description}}</p>
+    <span class="author">By {{ItemVm.isEditable ? 'Me' : ItemVm.item.author}}</span>
     <div ng-if="!ItemVm.isItemAuthor && ItemVm.retroStatus === 'voting'"> <!-- Is votable only if is not the author -->
         <a href ng-if="ItemVm.votedByUser" ng-click="ItemVm.unvoteItem()">Remove vote</a>
         <a href ng-if="!ItemVm.votedByUser" ng-click="ItemVm.voteItem()">Vote</a>

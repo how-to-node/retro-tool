@@ -36,8 +36,7 @@
     </div>
 
     <div class="add-item-wrapper" ng-if="RetroRoomVm.room.status === 'adding-items'" ng-class="{'bg-success': RetroRoomVm.newItem.sign === 'positive', 'bg-danger': RetroRoomVm.newItem.sign === 'negative'}">
-        <p>Add new item:</p>
-        <form class="form-horizontal">
+        <form class="form-horizontal add-item-form">
             <div class="form-group">
                 <div class="col-sm-10">
                     <textarea class="form-control new-description" rows="1" ng-model="RetroRoomVm.newItem.description"></textarea>

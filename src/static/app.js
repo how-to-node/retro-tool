@@ -18,7 +18,8 @@ var express = require('express'),
     // Own modules
     routerSetup = require('./pages/setup.routes.js');
 
-var port = process.env.PORT || '3000',
+var server_port = process.env.OPENSHIFT_NODEJS_PORT || process.env.PORT || '3000',
+    server_ip_address = process.env.OPENSHIFT_NODEJS_IP || '127.0.0.1',
     sessionInstance = session({
         secret: 'retro-tool',
         maxAge: 36000000,
@@ -75,7 +76,7 @@ if (app.get('env') === 'development') {
     });
 }
 
-server.listen(port);
+server.listen(server_port, server_ip_address);
 
 server.on('error', function(err) {
     console.error('There was an error');
@@ -83,5 +84,5 @@ server.on('error', function(err) {
 });
 
 server.on('listening', function() {
-    console.log('Listening on port: ' + port);
+    console.log('Listening on ' + server_ip_address + ', server_port ' + server_port);
 });

@@ -45,6 +45,37 @@ function retroWebSocketHandler(client, ns) {
                 ns.to(roomName).emit('item:removed', itemId);
             }
         });
+
+        clientSocket.on('item:vote', function(itemId) {
+            var newVoters = room.addVoter(user.username, itemId);
+            console.log(newVoters);
+            if (newVoters) {
+                ns.to(roomName).emit('item:voted', {
+                    item: itemId,
+                    votes: newVoters
+                });
+            }
+        });
+
+        clientSocket.on('item:unvote', function(itemId) {
+            var newVoters = room.removeVoter(user.username, itemId);
+            if (newVoters) {
+                ns.to(roomName).emit('item:unvoted', {
+                    item: itemId,
+                    votes: newVoters
+                });
+            }
+        });
+
+        clientSocket.on('status:next', function() {
+            room.nextStatus(user.username);
+            ns.to(roomName).emit('status:changed', room.status);
+        });
+
+        clientSocket.on('status:prev', function() {
+            room.prevStatus(user.username);
+            ns.to(roomName).emit('status:changed', room.status);
+        });
         // end: retro room events
 
         clientSocket.on('disconnect', function() {

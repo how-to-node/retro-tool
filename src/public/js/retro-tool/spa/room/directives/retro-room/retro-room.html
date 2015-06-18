@@ -1,45 +1,63 @@
 <div ng-if="RetroRoomVm.room">
-    <h1>{{RetroRoomVm.room.name}}</h1>
-    <span>{{RetroRoomVm.statusMsgs[RetroRoomVm.room.status]}}</span>
-
-    <div class="items-wrapper">
-        <div class="positives">
-            <h2>Positives</h2>
-            <ul>
-                <li ng-repeat="item in RetroRoomVm.room.items.positives" ng-init="canEdit = (item.author === RetroRoomVm.loggedUsername)">
-                    <div>
-                        <p>{{item.description}}</p>
-                        <span>By {{canEdit ? 'Me' : item.author}}</span>
-                        <span class="edit-panel" ng-if="canEdit">
-                            <a href ng-click="RetroRoomVm.removeItem(item)">Delete</a>
-                            <a href>Edit</a>
-                        </span>
-                    </div>
-                </li>
-            </ul>
+    <div class="retro-wrapper">
+        <div class="page-header">
+            <h1>{{RetroRoomVm.room.name}}
+                <small>
+                    <retro-status-toggle is-owner="RetroRoomVm.isOwner" current-status="RetroRoomVm.room.status"></retro-status-toggle>
+                </small>
+            </h1>
         </div>
-        <div class="negatives">
-            <h2>Negatives</h2>
-            <ul>
-                <li ng-repeat="item in RetroRoomVm.room.items.negatives" ng-init="canEdit = (item.author === RetroRoomVm.loggedUsername)">
-                    <div>
-                        <p>{{item.description}}</p>
-                        <span>By {{canEdit ? 'Me' : item.author}}</span>
-                        <span class="edit-panel" ng-if="canEdit">
-                            <a href ng-click="RetroRoomVm.removeItem(item)">Delete</a>
-                            <a href>Edit</a>
-                        </span>
-                    </div>
-                </li>
-            </ul>
+
+        <div class="items-wrapper">
+            <!-- Positives list -->
+            <div class="panel panel-success positives-list">
+                <div class="panel-heading">Positives</div>
+                <div class="panel-body">
+                    <ul>
+                        <li class="items-list" ng-repeat="item in RetroRoomVm.room.items.positives" ng-init="canEdit = (item.author === RetroRoomVm.loggedUsername)">
+                            <item status="RetroRoomVm.room.status" data="item" is-editable="canEdit"></item>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Negatives list -->
+            <div class="panel panel-danger negatives-list">
+                <div class="panel-heading">Negatives</div>
+                <div class="panel-body">
+                    <ul>
+                        <li class="items-list" ng-repeat="item in RetroRoomVm.room.items.negatives" ng-init="canEdit = (item.author === RetroRoomVm.loggedUsername)">
+                            <item status="RetroRoomVm.room.status" data="item" is-editable="canEdit"></item>
+                        </li>
+                    </ul>
+                </div>
+            </div>
         </div>
     </div>
 
-    <div class="add-item-wrapper">
-        <textarea ng-model="RetroRoomVm.newItem.description"></textarea>
-        <input type="radio" value="positive" ng-model="RetroRoomVm.newItem.sign">+
-        <input type="radio" value="negative" ng-model="RetroRoomVm.newItem.sign">-
-        <button ng-click="RetroRoomVm.addItem(RetroRoomVm.newItem)">Add</button>
+    <div class="add-item-wrapper" ng-if="RetroRoomVm.room.status === 'adding-items'" ng-class="{'bg-success': RetroRoomVm.newItem.sign === 'positive', 'bg-danger': RetroRoomVm.newItem.sign === 'negative'}">
+        <form class="form-horizontal add-item-form">
+            <div class="form-group">
+                <div class="col-sm-10">
+                    <textarea class="form-control new-description" rows="1" ng-model="RetroRoomVm.newItem.description"></textarea>
+                </div>
+                <div class="col-sm-2">
+                    <div>
+                        <div class="btn-group">
+                            <label class="btn btn-primary" ng-class="{active: RetroRoomVm.newItem.sign === 'positive'}">
+                                <input class="hidden" type="radio" value="positive" ng-model="RetroRoomVm.newItem.sign">
+                                <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+                            </label>
+                            <label class="btn btn-primary" ng-class="{active: RetroRoomVm.newItem.sign === 'negative'}">
+                                <input class="hidden" type="radio" value="negative" ng-model="RetroRoomVm.newItem.sign">
+                                <span class="glyphicon glyphicon-minus" aria-hidden="true"></span>
+                            </label>
+                        </div>
+                        <button type="button" class="btn btn-success" ng-click="RetroRoomVm.addItem(RetroRoomVm.newItem)" ng-disabled="!RetroRoomVm.newItem.sign">Add</button>
+                    </div>
+                </div>
+            </div>
+        </form>
     </div>
 
 </div>

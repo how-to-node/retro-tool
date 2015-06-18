@@ -21,7 +21,7 @@
                 prev: 'adding-items'
             },
             'adding-actions-to-take': {
-                transitionLabel: 'Start adding actios-to-take!',
+                transitionLabel: 'Start adding actions-to-take!',
                 next: 'closed',
                 prev: 'voting'
             },

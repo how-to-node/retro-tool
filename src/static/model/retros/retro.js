@@ -40,25 +40,43 @@ Retro.prototype.isActive = function() {
     return retroStatus.indexOf(this.status) < 3;
 };
 
+/**
+ * Updates the status of the retro, to the next one
+ * @param {string} who - user who is intending to update status - needs to be the owner
+ */
 Retro.prototype.nextStatus = function(who) {
     var currentIndex = retroStatus.indexOf(this.status);
+    // if is a valid status AND next status is not the last one AND is the owner of the retro
     if (currentIndex > -1 && (currentIndex + 1) < retroStatus.length && who === this.owner) {
         this.status = retroStatus[currentIndex + 1];
     }
 };
 
+/**
+ * Updates the status of the retro, to the previous one
+ * @param {string} who - user who is intending to update status - needs to be the owner
+ */
 Retro.prototype.prevStatus = function(who) {
     var currentIndex = retroStatus.indexOf(this.status);
+    // if is a valid status AND prev status is the first one or further AND is the owner
     if (currentIndex > -1 && (currentIndex - 1) >= 0 && who === this.owner) {
         this.status = retroStatus[currentIndex - 1];
     }
 };
 
+/**
+ * Adds an item to the retro
+ * @param {string} description
+ * @param {string} sign - valid ITEM_SIGN
+ * @param {string} author
+ * @return {object | boolean} item if it was created, false if was not
+ */
 Retro.prototype.addItem = function(description, sign, author) {
+    // status validation
     if (!this.isAddingItems()) {
         return false;
     }
-    // validations
+    // parameters validations
     if (this.participants.indexOf(author) === -1) {
         console.error('ERROR - Guest %s is not a participant of %s', author, this.name);
         return false;
@@ -88,13 +106,27 @@ Retro.prototype.addItem = function(description, sign, author) {
     return newItem;
 }
 
+/**
+ * Removes an item from the list
+ * @param {string} itemId
+ * @param {string} who - needs to be the author of the item
+ * @return {boolean} true if was successfuly removed
+ */
 Retro.prototype.removeItem = function(itemId, who) {
+    // status validation
     if (!this.isAddingItems()) {
         return false;
     }
 
     return removeIfFound(this.items.positives, itemId) || removeIfFound(this.items.negatives, itemId);
 
+    /**
+     * Helper function to remove item if is found.
+     * Don't move from current scope
+     * @param {array} itemsArray
+     * @param {string} itemId
+     * @return {boolean} true if was found and removed
+     */
     function removeIfFound(itemsArray, itemId) {
         var item = _.find(itemsArray, function(item) {
             return item.id === itemId;
@@ -109,7 +141,14 @@ Retro.prototype.removeItem = function(itemId, who) {
     }
 };
 
+/**
+ * Adds a voter to the item
+ * @param {string} who - new voter
+ * @param {string} itemId - voted item
+ * @return {array} new votes list
+ */
 Retro.prototype.addVoter = function(who, itemId) {
+    // status validation
     if (!this.isVoting()) {
         return false;
     }
@@ -123,7 +162,14 @@ Retro.prototype.addVoter = function(who, itemId) {
     return null;
 };
 
+/**
+ * Removes a voter from the item
+ * @param {string} who
+ * @param {string} itemId - unvoted item
+ * @return {array} new votes list
+ */
 Retro.prototype.removeVoter = function(who, itemId) {
+    // status validation
     if (!this.isVoting()) {
         return null;
     }
@@ -142,6 +188,11 @@ Retro.prototype.removeVoter = function(who, itemId) {
     return null;
 };
 
+/**
+ * Find an item
+ * @param {string} itemId
+ * @return {object} item
+ */
 Retro.prototype.findItem = function(itemId) {
     var item = find(this.items.positives, itemId);
 
@@ -151,6 +202,9 @@ Retro.prototype.findItem = function(itemId) {
 
     return item || null;
 
+    /**
+     * Helper function
+     */
     function find(items, itemId) {
         var item = _.find(items, function(item) {
             return item.id === itemId;
@@ -160,10 +214,18 @@ Retro.prototype.findItem = function(itemId) {
     };
 };
 
+/**
+ * Status check for ADDING ITEMS
+ * @return {boolean} true if is ADDING ITEMS
+ */
 Retro.prototype.isAddingItems = function() {
     return this.status === retroStatus[0];
 };
 
+/**
+ * Status check for VOTING
+ * @return {boolean} true if is VOTING
+ */
 Retro.prototype.isVoting = function() {
     return this.status === retroStatus[1];
 };

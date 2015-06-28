@@ -1,9 +1,9 @@
 {
   "name": "retro-tool",
   "version": "0.0.0",
-  "private": true,
+  "main": "dist/static/app.js",
   "scripts": {
-    "start": "node src/static/app.js"
+    "start": "node dist/static/app.js"
   },
   "dependencies": {
     "body-parser": "~1.12.0",

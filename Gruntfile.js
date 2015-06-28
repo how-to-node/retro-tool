@@ -124,4 +124,13 @@ module.exports = function(grunt) {
         'express:start',
         'watch:public'
     ]);
+
+    grunt.registerTask('build:dev', [
+        'clean:dist',
+        'copy:static',
+        'copy:client',
+        'copy:bowerDependencies',
+        'concat:bowerDependenciesJs',
+        'less:dev'
+    ]);
 }

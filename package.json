@@ -27,6 +27,6 @@
     "grunt-contrib-less": "^1.0.1",
     "grunt-contrib-watch": "^0.6.1",
     "grunt-express-server": "^0.5.1",
-    "main-bower-files": "^2.8.0"
+    "main-bower-files": "^2.8.2"
   }
 }

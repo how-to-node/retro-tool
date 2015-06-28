@@ -6,11 +6,11 @@ install:
     - npm install
     - bower install
 script: grunt build:dev
+addons:
+    artifacts: true
 deploy:
   provider: openshift
   skip_cleanup: true
-  addons:
-      artifacts: true
   user: jaureguifacundo@gmail.com
   password:
     secure: Zoj6dQ3kgqjSbxMNqzBDCocHopxGm+SvVIcAd93MVWutgqBWzjbJODWt8t87RpTz0nbRchRbtyLyBnpM9XgE135RSuLdpUPMGbUt8t4jw8eMO9a5SDRNjWl0bInrXqi9/JykFwCxjtq20geyLu+B8wo9OdakIPoACT3NJOTD9GF2sDopJ8vocZ+U0Qmvm1m8I2Ohptnrb8MVkjxoZH0AeqgKQEOVNH8yJKd9Wr2MqsbczwBz4hS/9KEN8uXY1QBjUCAeXVnUfE6GJAmKM4WhItDtMRW3DZiyY1BMOXqkQbTRteibSLJ0MKMMVee8fZWGS6Xaz+v+PZZYnJPeahRzZBOLwQKNfAf+miWkkIoM/roVtyeSgq8P97U4OpZDnZMobXP9UfMbgrZDeTfyzW0JJVaNWLnGJhCm2WSX656US9dxp1TZ8BZJSnK+sCKEJYRodskhHyBUSQ+ow71HzDmrFLFBOHeKWp8N/B6iI8neJ9J7wVCXsLz18/U0UHBO3mcxUrUpmOO+RKq9lHg6M0c/kTtwfQh7b3JuxK7sP4DPNM7BlnFGEapcUCt+mYqHdtN6VRqceOmYJDujZDA7Yru3i+UEJsF7KS+E1BoD2fapZUuHylePp8IzScnq0s3Od2yiev0iZZum7dwev2estMrAk+Rhf0LLEDr7rsUPbmQXlKk=

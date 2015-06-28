@@ -9,7 +9,6 @@ script: grunt build:dev
 before_deploy:
     - rm .gitignore
     - git add .
-    - git commit -m "[Travis] Deploying"
 deploy:
   provider: openshift
   user: jaureguifacundo@gmail.com

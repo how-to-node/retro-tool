@@ -1,3 +1,11 @@
+languaje: node_js
+node_js:
+    - "0.10"
+before_install: npm install -g grunt-cli bower
+install:
+    - npm install
+    - bower install
+before_script: grunt build:dev
 deploy:
   provider: openshift
   user: jaureguifacundo@gmail.com

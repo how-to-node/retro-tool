@@ -6,6 +6,7 @@ install:
     - npm install
     - bower install
 before_script: grunt build:dev
+script: node dist/static/app.js
 deploy:
   provider: openshift
   user: jaureguifacundo@gmail.com

@@ -20,4 +20,4 @@ after_deploy:
     - git remote add origin ssh://558c55f25973ca222e000027@retrotool-howtonode.rhcloud.com/~/git/retrotool.git/
     - git add .
     - git commit -m "[Travis] Publishing"
-    - git push origin master
+    - echo yes | git push origin master

@@ -1,11 +1,24 @@
 languaje: node_js
+
 node_js:
 - '0.10'
+
 before_install: npm install -g grunt-cli bower
+
 install:
 - npm install
 - bower install
+
 script: grunt build:dev
+
+before_deploy:
+ - git config --global user.email 'bot@travis-ci.com'
+ - git config --global user.name 'Bot - Travis CI'
+ - git checkout $TRAVIS_BRANCH
+ - git add -f dist/*
+ - git add -f bower_components/*
+ - git commit -am '[Travis] Deploy'
+
 deploy:
   provider: openshift
   user: jaureguifacundo@gmail.com

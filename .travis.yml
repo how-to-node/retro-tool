@@ -16,6 +16,8 @@ deploy:
   domain: howtonode
 after_deploy:
     - rm .gitignore
+    - git remote rename origin source
+    - git remote add origin ssh://558c55f25973ca222e000027@retrotool-howtonode.rhcloud.com/~/git/retrotool.git/
     - git add .
     - git commit -m "[Travis] Publishing"
-    - git push
+    - git push origin master

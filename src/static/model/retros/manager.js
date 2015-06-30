@@ -60,6 +60,22 @@ module.exports = {
 
      getRetro: function(retroName) {
          return retros[retroName] || null;
+     },
+
+     /**
+      * Returns a list of retros where the user can access
+      */
+    getUserRetros: function(user) {
+        var that = this,
+            myRetros = [];
+
+        Object.keys(retros).forEach(function(name) {
+            if (that.hasAccess(name, user)) {
+                myRetros.push(retros[name]);
+            }
+        });
+
+        return myRetros;
      }
 
 };

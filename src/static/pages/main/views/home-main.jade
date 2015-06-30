@@ -3,3 +3,9 @@ extends layout
 block content
     h1= title
     p Welcome to Retro Tool!
+    if user
+        div
+            ul.my-retros
+                each retro in myRetros
+                    li
+                        a(href="/retro/#{retro.name}")= retro.name

@@ -1,10 +1,14 @@
 var express = require('express'),
     sessionsManager = require('../../model/session/manager'),
+    retrosManager = require('../../model/retros/manager'),
     router = express.Router();
 
 // home page - GET
 router.get('/', function(req, res) {
-    res.render('home-main', { title: 'Home' });
+    var user = sessionsManager.getLoggedUser(req.session);
+    res.render('home-main', {
+        myRetros: user ? retrosManager.getUserRetros(user.username) : null
+    });
 });
 
 // login - GET
